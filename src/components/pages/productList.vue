@@ -3,7 +3,7 @@
             
         <section class="jumbotron text-center">
             <div class="container">
-                <h1 class="jumbotron-heading">E-COMMERCE CATEGORY</h1>
+                <h1 class="jumbotron-heading">E-COMMERCE HOME</h1>
                 <p class="lead text-muted mb-0">Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte...</p>
             </div>
         </section>
@@ -66,12 +66,6 @@
                        <h6 class="mr-3">Loading products...</h6> 
                        <baseLoader />
                     </div> 
-                    <!-- <div class="container">
-                       <h6 class="mr-3 mb-5 mt-1">Count :  {{ count }} </h6> 
-                       <h6 class="mr-3 mb-5 mt-1">Count :  {{ count }} </h6> 
-                        <button class="btn btn-success" @click="addCount">Add</button>
-                        <button class="btn btn-success" @click="increment">Add(asinc)</button>
-                    </div>                                         -->
                     <div class="row" v-if="!isLoaded">
                         <div class="col-12 col-md-6 col-lg-4" 
                              v-for="product in pagination" 
@@ -79,7 +73,7 @@
                              >
                             <div class="card">
                                 <img class="card-img-top" 
-                                     :src="product.thumbnailUrl" 
+                                     :src="product.image" 
                                      alt="Card image cap">
                                 <div class="card-body">
                                     <h6 class="card-title">
@@ -87,19 +81,22 @@
                                             {{ product.title }} 
                                         </strong>
                                     </h6>
+                                    <p> {{ product.description }} </p>
                                     <p class="card-text"> 
                                         <strong>
-                                            ${{ product.id }}
+                                            $ {{ product.price }}
                                         </strong> 
                                     </p>
                                     <div class="row">
                                         <div class="col">
-                                            <a class="btn btn-primary btn-block"> 
+                                            <router-link to='/login' 
+                                                         class="btn btn-primary btn-block"
+                                                    > 
                                                 Add 
-                                            </a>
+                                            </router-link>
                                         </div>
                                         <div class="col">
-                                            <router-link to="/" 
+                                            <router-link to="/login " 
                                                          tag="button" 
                                                          class="btn btn-success"
                                                         >View

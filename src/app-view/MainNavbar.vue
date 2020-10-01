@@ -16,12 +16,6 @@
                 </router-link>
                 <router-link 
                     tag="b-nav-item" 
-                    to="/login"
-                >
-                    Login
-                </router-link>
-                <router-link 
-                    tag="b-nav-item" 
                     to="/user-dashboard"
                 >
                     Dashboard
@@ -30,7 +24,7 @@
                     tag="b-nav-item" 
                     to="/cart"
                 >
-                <a class="btn btn-success btn-sm ml-3">
+                <a class="btn btn-success btn-sm ml-3" v-if="cartItems.length > 0">
                     <i class="fa fa-shopping-cart"></i> 
                         Cart
                     <span class="badge badge-light"> 
@@ -73,10 +67,11 @@ import firebase from 'firebase'
 import 'firebase/auth'
 import auth from '../auth/mixins/auth.js'
 import userActions from '../components/pages/mixins/userActions.js'
+import userCart from '../components/pages/mixins/userCart.js'
 
 export default {
     name: 'MainNavbar',
-    mixins: [ auth, userActions ],
+    mixins: [ auth, userActions, userCart ],
     data: () => {
         return {
             userName: 'signin',
@@ -86,7 +81,6 @@ export default {
     created () {
         firebase.auth().onAuthStateChanged(user => {
             this.isLogged = !!user
-            console.log('gagas', user)
             if(user) {
                 this.userName = user.email
             }else{

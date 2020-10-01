@@ -1,3 +1,5 @@
+import  firebase  from "firebase";
+
 const userActions = {
     data: () => {
         return {
@@ -6,8 +8,9 @@ const userActions = {
             page: 0,
             perPage: 3,
             isLoaded: false,
-            cartItems: [],
-            val: ''            
+            cartItems: null,
+            val: '',
+            isAlerted: false            
         }
     },
     computed: {
@@ -17,17 +20,18 @@ const userActions = {
     },
     mounted () {
         this.getProducts()
+        this.addToCart()
     },
     methods: {
         getProducts () {
             this.isLoaded = true
-            fetch('https://jsonplaceholder.typicode.com/photos?_limit=12')
-                .then(response => response.json())
-                .then(json => {
-                    this.products = json;
+            firebase.firestore().collection("productList").get().then(querySnapshot => {
+                querySnapshot.forEach(doc => {
+                    this.products.push(doc.data())
                     this.isLoaded = false
                     this.changePage()
                 })
+            })
         },
         changePage (index = 0) {
             this.isLoaded = true
@@ -49,8 +53,69 @@ const userActions = {
                 let start = this.page * this.perPage
                 this.pagination = this.products.slice(start ,  start + this.perPage)
             }
+        },
+        addToCart (index) {
+            firebase.auth().onAuthStateChanged(user => {
+                if(user) {
+                    const db = firebase.firestore()
+                    db.collection("usersCollection").where("userId", "==", user.uid)
+                    .get()
+                    .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            console.log('Doc ', doc)
+                            this.products.find((product, ind) => {
+                                if(index === ind) {
+                                console.log('Product ', product)
+                                console.log('ind ', ind)
+                                this.cartitem = product
+                                db.collection('cartCollections').doc().set({
+                                    id: ind,
+                                    itemId: user.uid,
+                                    item: this.cartitem
+                                })                            
+                                }
+                            })
+                        })
+                    })
+                    .catch(function(error) {
+                        console.log("Error getting documents: ", error);
+                    })
+                }
+            })
+        },
+        removeFromCart (index) {
+            firebase.auth().onAuthStateChanged(user => {
+                if(user) {
+                    const db = firebase.firestore()
+                    db.collection("usersCollection").where("userId", "==", user.uid)
+                    .get()
+                    .then(querySnapshot => {
+                        querySnapshot.forEach(doc => {
+                            console.log('Doc ', doc)
+                            this.products.find((product, ind) => {
+                                if(index === ind) {
+                                console.log('Product ', product)
+                                console.log('ind ', ind)
+                                this.cartitem = product
+                                db.collection('cartCollections').doc().delete()
+                                .then(() => {
+                                    console.log('Deleted!')
+                                })                         
+                                }
+                            })
+                        })
+                    })
+                    .catch(function(error) {
+                        console.log("Error getting documents: ", error)
+                    })
+                }
+            })            
         }
     }
 }
-
+// db.collection("cities").doc("DC").delete().then(function() {
+//     console.log("Document successfully deleted!")
+// }).catch(function(error) {
+//     console.error("Error removing document: ", error)
+// })  
 export default userActions

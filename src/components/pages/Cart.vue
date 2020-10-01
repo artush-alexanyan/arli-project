@@ -22,10 +22,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><img src="https://dummyimage.com/50x50/55595c/fff" /> </td>
-                                    <td>Product Name Dada</td>
-                                    <td>In stock</td>
+                                <tr v-for="(item, index) in cartItems"
+                                    :key="item.id"
+                                        >
+                                    <td><img :src="item.item.image" /> </td>
+                                    <td> {{ item.item.title }} </td>
+                                    <td> {{ item.item.description }} </td>
                                     <td>
                                         <baseInput
                                             placeholder="0" 
@@ -35,8 +37,8 @@
                                             style="width:"
                                         />
                                     </td>
-                                    <td class="text-right">124,90 €</td>
-                                    <td class="text-right"><button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> </button> </td>
+                                    <td class="text-right"> $ {{ item.item.price }} </td>
+                                    <td class="text-right"><button class="btn btn-sm btn-danger" @click="removeFromCart(index)"><i class="fa fa-trash"></i> </button> </td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -75,16 +77,13 @@
 <script>
 import baseInput from '../base-components/baseInput.vue'
 import userActions from '../pages/mixins/userActions.js'
+import userCart from '../pages/mixins/userCart.js'
 
 export default {
     name: 'Cart',
-    mixins: [ userActions ],
+    mixins: [ userActions, userCart ],
     components: { baseInput },
-    data: () => {
-        return {
 
-        }
-    }
 }
 </script>
 

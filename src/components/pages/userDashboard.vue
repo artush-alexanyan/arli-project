@@ -68,18 +68,18 @@
                     </div>                    
                     <div class="row" v-if="!isLoaded">
                         <div class="col-12 col-md-6 col-lg-4" 
-                             v-for="product in pagination" 
+                             v-for="(product, index) in pagination" 
                              :key="product.id"
                              >
                             <div class="card">
                                 <img class="card-img-top" 
-                                     :src="product.thumbnailUrl" 
+                                     :src="product.image" 
                                      alt="Card image cap">
                                 <div class="card-body">
                                     <h6 class="card-title">
                                         <strong> {{ product.title }} </strong>
                                     </h6>
-                                    <p class="card-text"> {{ product.id }} </p>
+                                    <p class="card-text"> {{ product.price }} </p>
                                     <div class="row">
                                         <!-- <div class="col">
                                             <p class="btn btn-danger btn-block">
@@ -87,9 +87,11 @@
                                             </p>
                                         </div> -->
                                         <div class="col">
-                                            <a class="btn btn-primary btn-block"> 
+                                            <button class="btn btn-primary btn-block"
+                                                    @click="addToCart(index)"    
+                                                > 
                                                 Add 
-                                            </a>
+                                            </button>
                                         </div>
                                         <div class="col">
                                             <router-link to="/" 
@@ -143,71 +145,25 @@
 
             </div>
         </div>
-
-        <!-- Footer -->
         <MainFooter />
        <router-view></router-view>
     </div>    
 </template>
 
 <script>
-// import axios from 'axios'
 import MainFooter from '../../app-view/MainFooter.vue'
 import baseLoader from '../base-components/baseLoader.vue'
+import userActions from './mixins/userActions.js'
 
 export default {
     name: 'productList',
+    mixins: [ userActions ],
     components: { MainFooter, baseLoader },
     data: () => {
         return {
-            products: [],
-            pagination: [],
-            page: 0,
-            perPage: 3,
-            isLoaded: false
+
         }
-    },
-    computed: {
-        getPages () {
-            return Math.ceil(this.products.length / this.perPage)
-        }
-    },
-    mounted () {
-        this.getProducts()
-    },
-    methods: {
-        getProducts () {
-            this.isLoaded = true
-            fetch('https://jsonplaceholder.typicode.com/photos?_limit=12')
-                .then(response => response.json())
-                .then(json => {
-                    this.products = json;
-                    this.isLoaded = false
-                    this.changePage()
-                })
-        },
-        changePage (index = 0) {
-            this.isLoaded = true
-            this.page = index
-            let start = index * this.perPage
-            this.pagination = this.products.slice(start,  start + this.perPage)
-            this.isLoaded = false
-        },
-        onNext () {
-            if (this.page >= 0 && this.page < this.getPages - 1) {
-                this.page++
-                let start = this.page * this.perPage
-                this.pagination = this.products.slice(start ,  start + this.perPage)
-            }
-        },
-        onPrevious () {
-            if (this.page > 0) {
-                this.page--
-                let start = this.page * this.perPage
-                this.pagination = this.products.slice(start ,  start + this.perPage)
-            }
-        }
-    }  
+    }
 }
 </script>
 

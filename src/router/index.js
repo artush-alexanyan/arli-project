@@ -45,7 +45,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "product" */ '../components/pages/singleProduct.vue')
       }        
     ]
-  }
+  },
+  {
+    path: '/admin-add-product',
+    name: 'addProduct',
+    component: () => import(/* webpackChunkName: "admin-add-product" */ '../admin/addProduct.vue')
+  },  
 ]
 
 const router = new VueRouter({

@@ -7,8 +7,7 @@ const user = {
             userData: {
                 email: null,
                 password: null,
-                userProduct: ['Hello', 'Hello again'],
-                userCartItem: null
+                userCartItem: []
             },
             error: [],
             currentUserName: 'sign in'
@@ -20,17 +19,15 @@ const user = {
             .auth().createUserWithEmailAndPassword(this.userData.email, this.userData.password)
                 .then(response => {
                     console.log(response)
-                    console.log('User Id', response.user.uid)
                 // Add a new user document in collection "usersCollection"
                 firebase.firestore().collection('usersCollection').doc(response.user.uid).set({
                     userId: response.user.uid,
                     userEmail: response.user.email,
-                    userProduct: this.userData.userProduct,
+                    userProduct: this.userData.userCartItem,
                 })
                 .then(() => {
                     this.$router.push({ name: 'userDashboard' })
                     console.log("Document successfully written!");
-                    console.log('IDiiii ', response.user.uid)
                 })                 
                 })
                 .catch(error => {
@@ -41,8 +38,7 @@ const user = {
         login () {
             firebase
             .auth().signInWithEmailAndPassword(this.userData.email, this.userData.password)
-                .then(response => {
-                    console.log('Logged in as:', response.user.email)
+                .then(() => {
                     this.$router.push({ name: 'userDashboard' })
                 })
                 .catch(error => {
@@ -52,7 +48,6 @@ const user = {
         signout () {
             firebase
             .auth().signOut().then(() => {
-                alert('Signed out!')
                 this.$router.push({ name: 'Login' })
             })
         }
