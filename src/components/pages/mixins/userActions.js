@@ -65,11 +65,8 @@ const userActions = {
                             console.log('Doc ', doc)
                             this.products.find((product, ind) => {
                                 if(index === ind) {
-                                console.log('Product ', product)
-                                console.log('ind ', ind)
                                 this.cartitem = product
                                 db.collection('cartCollections').doc().set({
-                                    id: ind,
                                     itemId: user.uid,
                                     item: this.cartitem
                                 })                            
@@ -83,24 +80,19 @@ const userActions = {
                 }
             })
         },
-        removeFromCart (index) {
+        removeFromCart () {
             firebase.auth().onAuthStateChanged(user => {
                 if(user) {
                     const db = firebase.firestore()
-                    db.collection("usersCollection").where("userId", "==", user.uid)
+                    db.collection("cartCollections").where("itemId", "==", user.uid)
                     .get()
                     .then(querySnapshot => {
                         querySnapshot.forEach(doc => {
-                            console.log('Doc ', doc)
+                            console.log('Doc ', doc.data())
                             this.products.find((product, ind) => {
-                                if(index === ind) {
-                                console.log('Product ', product)
-                                console.log('ind ', ind)
-                                this.cartitem = product
-                                db.collection('cartCollections').doc().delete()
-                                .then(() => {
-                                    console.log('Deleted!')
-                                })                         
+                                if(ind == doc.data().item.id) {
+                                    console.log('We are going to delete this prroduct ' + product + 'And doc id is ' + doc.id)
+                                    db.collection('cartCollections').doc(doc.id).delete()
                                 }
                             })
                         })
