@@ -5,13 +5,20 @@
             <div class="container">
                 <h1 class="jumbotron-heading">
                     Wellcome
-                <h4>
+                <h6>
                     <strong>
                         {{ userName }}
                     </strong>                     
-                </h4>
+                </h6>
                 </h1>
-                <p class="lead text-muted mb-0">Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte...</p>
+                <p class="lead text-muted mb-0">
+                    Le Lorem Ipsum est simplement du 
+                    faux texte employé dans la composition et la mise en 
+                    page avant impression. Le Lorem Ipsum est le faux texte
+                    standard de l'imprimerie depuis les années 1500, quand un peintre 
+                    anonyme assembla ensemble des morceaux de texte pour réaliser un 
+                    livre spécimen de polices de texte...
+                </p>
             </div>
         </section>
         <div class="container">
@@ -95,16 +102,24 @@
                                         </div> -->
                                         <div class="col">
                                             <button class="btn btn-primary btn-block"
-                                                    @click="addToCart(index)"    
+                                                    @click="addToCart(index)" 
+                                                    v-if="!product.isAdded"   
                                                 > 
                                                 Add 
                                             </button>
+                                            <button class="btn btn-success btn-block"
+                                                    v-if="product.isAdded"                                                   
+                                                > 
+                                                <i class="fa fa-shopping-cart"></i>   
+                                            </button>    
+                                            <!-- <h1> {{ product.isAdded }} </h1>                                         -->
                                         </div>
                                         <div class="col">
                                             <router-link to="/" 
                                                          tag="button" 
                                                          class="btn btn-success"
-                                                        >View
+                                                        >
+                                                        View
                                             </router-link>                                        
                                         </div>      
                                     </div>

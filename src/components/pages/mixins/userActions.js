@@ -3,12 +3,10 @@ import  firebase  from "firebase"
 const userActions = {
     data: () => {
         return {
-            products: [],
             pagination: [],
             page: 0,
             perPage: 3,
             isLoaded: false,
-            cartItems: null,
             val: '',
             docData: []            
         }

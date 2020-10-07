@@ -6,6 +6,7 @@ const userCart = {
     data: () => {
         return {
             cartItems: [],
+            products: [],
         }
     },
     methods: {
@@ -40,10 +41,10 @@ const userCart = {
                                 itemId: user.uid,
                                 item: this.cartItems
                             })  
+                            product.isAdded = true
                             console.log('Function refresh called! :', this.refresh())
                             }
                         })
-                        // console.log('Function refresh called! :', this.refresh())
                     })
                 })
                 .catch(function(error) {
@@ -71,8 +72,8 @@ const userCart = {
                                                 console.log(' Finally deleting docoment  ',(doc.data()))
                                                 doc.ref.delete()
                                                 this.isLoaded = true
-                                                console.log('Function refresh called! :', this.refresh())
-                                                this.isLoaded = false
+                                                this.refresh()
+                                                doc.data().item.isAdded = true
                                             }
                                     })
                                 })
@@ -91,9 +92,9 @@ const userCart = {
         this.getCartItems()
     }    
   },
-  created () {
-    this.getCartItems()
-}    
+    created () {
+        this.getCartItems()
+    }    
 }
 
 export default userCart

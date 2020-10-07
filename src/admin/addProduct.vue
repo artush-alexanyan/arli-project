@@ -88,7 +88,8 @@ export default {
                 title: '',
                 price: '',
                 description: '',
-                image: ''
+                image: '',
+                isAdded: false
             }
         }
     },
@@ -107,7 +108,8 @@ export default {
                 title: this.product.title,
                 price: this.product.price,
                 description: this.product.description,
-                image: this.product.image
+                image: this.product.image,
+                isAdded: false
             })
             .then(() => {
                 console.log('Product added successfuly!')

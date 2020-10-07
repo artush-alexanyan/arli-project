@@ -99,7 +99,8 @@
                                             <router-link to="/login " 
                                                          tag="button" 
                                                          class="btn btn-success"
-                                                        >View
+                                                        >
+                                                        View
                                             </router-link>                                        
                                         </div>      
                                     </div>
