@@ -4,9 +4,9 @@
             <div class="container">
                 <h1 class="jumbotron-heading">E-COMMERCE CART</h1>
             </div>
-        </section>
+        </section>    
 
-        <div class="container mb-4">
+        <div class="container mb-4" v-if="cartItems.length > 0">
             <div class="row">
                 <div class="col-12">
                     <div class="table-responsive">
@@ -38,7 +38,12 @@
                                         />
                                     </td>
                                     <td class="text-right"> $ {{ item.item.price }} </td>
-                                    <td class="text-right"><button class="btn btn-sm btn-danger" @click="removeFromCart(index)"><i class="fa fa-trash"></i> </button> </td>
+                                    <td class="text-right">
+                                        <button class="btn btn-sm btn-danger" 
+                                            @click="removeFromCart(index)">
+                                                <i class="fa fa-trash"></i> 
+                                        </button> 
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
@@ -63,14 +68,23 @@
                         <div class="col-sm-12 col-md-6 text-right">
                             <button 
                                 class="btn btn-lg btn-block btn-success text-uppercase"
+                                @click="refresh"
                             >
-                            Checkout
+                            Checkout/refresh;)
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="d-flex justify-content-center loader" v-else-if="isLoaded">
+            <baseLoader /> 
+        </div>        
+        <section class="jumbotron text-center m-3" v-else-if="cartItems.length < 1">
+            <div class="container">
+                <h4 class="jumbotron-heading text-success">Your cart is empty!</h4>
+            </div>
+        </section>           
     </div>
 </template>
 
@@ -78,12 +92,12 @@
 import baseInput from '../base-components/baseInput.vue'
 import userActions from '../pages/mixins/userActions.js'
 import userCart from '../pages/mixins/userCart.js'
+import baseLoader from '../base-components/baseLoader.vue'
 
 export default {
     name: 'Cart',
     mixins: [ userActions, userCart ],
-    components: { baseInput },
-
+    components: { baseInput, baseLoader }
 }
 </script>
 
@@ -92,6 +106,9 @@ export default {
 ** Style Simple Ecommerce Theme for Bootstrap 4
 ** Created by T-PHP https://t-php.fr/43-theme-ecommerce-bootstrap-4.html
 */
+.loader{
+    margin-top: 200px;
+}
 .bloc_left_price {
     color: #c01508;
     text-align: center;

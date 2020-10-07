@@ -3,7 +3,14 @@
             
         <section class="jumbotron text-center">
             <div class="container">
-                <h1 class="jumbotron-heading">Wellcome to user page</h1>
+                <h1 class="jumbotron-heading">
+                    Wellcome
+                <h4>
+                    <strong>
+                        {{ userName }}
+                    </strong>                     
+                </h4>
+                </h1>
                 <p class="lead text-muted mb-0">Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un peintre anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte...</p>
             </div>
         </section>
@@ -154,15 +161,25 @@
 import MainFooter from '../../app-view/MainFooter.vue'
 import baseLoader from '../base-components/baseLoader.vue'
 import userActions from './mixins/userActions.js'
+import userCart from './mixins/userCart.js'
+import firebase from 'firebase'
+import 'firebase/auth'
 
 export default {
     name: 'productList',
-    mixins: [ userActions ],
+    mixins: [ userActions, userCart ],
     components: { MainFooter, baseLoader },
     data: () => {
         return {
-
+            userName: ''
         }
+    },
+    created () {
+        firebase.auth().onAuthStateChanged(user => {
+            if(user) {
+                this.userName = user.email
+            }
+        })
     }
 }
 </script>

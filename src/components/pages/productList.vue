@@ -144,7 +144,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -159,10 +158,11 @@
 import MainFooter from '../../app-view/MainFooter.vue'
 import baseLoader from '../base-components/baseLoader.vue'
 import userActions from './mixins/userActions.js'
+import userCart from './mixins/userCart.js'
 
 export default {
     name: 'productList',
-    mixins: [ userActions ],
+    mixins: [ userActions, userCart ],
     components: { 
         MainFooter, 
         baseLoader 
